@@ -9,5 +9,7 @@ println("unique: " + uniqueList(str))
 println("contains: " + contains(str, "d"))
 println("indexOf: " + indexOf(str, "d"))
 
+println("sortString: " + sortString(str))
+println("trim: " + trim("   Hello,   LOCO   world!   "))
 println("upper case: " + upperCase("Bagdaulet Seilov"))
 println("lower case: " + lowerCase("Bagdaulet Seilov"))

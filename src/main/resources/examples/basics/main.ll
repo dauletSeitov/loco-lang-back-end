@@ -31,3 +31,20 @@ fun main() {
         println("i: " + i)
     }
 }
+
+
+
+println("ascii: " + toNumber("a"))
+println("string: " + toString(49))
+
+var letters = ["b", "a", "d"]
+println("list to string: " + listToString(letters))
+println("string to list: " + stringToList("bad"))
+
+println(typeOf(null) == NULL)
+println(typeOf(123) == NUMBER)
+println(typeOf("hi") == STRING)
+println(typeOf(true) == BOOLEAN)
+println(typeOf([1, 2]) == ARRAY)
+println(typeOf(< >) == STRUCTURE)
+println(typeOf(sort) == FUNCTION)
