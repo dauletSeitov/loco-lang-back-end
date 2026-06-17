@@ -34,7 +34,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'io.github.dauletSeitov:loco-lang:0.0.8'
+    implementation 'io.github.dauletSeitov:loco-lang:0.0.10'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'

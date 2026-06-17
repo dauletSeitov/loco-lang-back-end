@@ -33,4 +33,11 @@ public class StorageService {
     public void put(String sessionId, List<Project> projects) {
         sessions.put(sessionId, projects);
     }
+
+    public void put(String sessionId, Project projects) {
+
+        sessions.get(sessionId).stream().findAny(it->it.df = "");
+
+        sessions.put(sessionId, projects);
+    }
 }

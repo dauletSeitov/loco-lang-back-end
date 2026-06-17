@@ -1,7 +1,8 @@
 package com.example.locolangbackend.project;
 
 import analyze.ExpressionAnalyzer;
-import analyze.ds.Library;
+import analyze.Library;
+import analyze.SourceFile;
 import com.example.locolangbackend.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -22,12 +23,18 @@ public class ProjectService {
     private final StorageService storageService;
 
     private static final Map<String, String> projectNameToLocationMap = Map.of(
-            "Binary search", "binary-search"
+            "Binary search", "binary-search",
+            "Basics", "basics",
+            "Errors and edge cases", "errors-and-edge-cases",
+            "Functions", "functions",
+            "List operations", "list-operations",
+            "String operations", "string-operations",
+            "Structure map operations", "structure map operations"
     );
 
     public List<Project> get(String sessionId) {
         var projects = storageService.getBySession(sessionId);
-        if (projects == null) {
+        if (projects == null || projects.isEmpty()) {
             var list = getDefault();
             storageService.put(sessionId, list);
             return list;
@@ -41,10 +48,11 @@ public class ProjectService {
         Library defaultLibraries = ExpressionAnalyzer.getDefaultLibraries();
         var std = defaultLibraries.libraries().stream().map(it -> new File(it.fileName(), it.content())).toList();
 
-        return projectNameToLocationMap.entrySet().stream()
-                .map(it -> new Project(it.getKey(), concat(readAllFiles(it.getValue()), std)))
+        var stdProject = new Project("Standard library", std);
+        var restDefaultProjects = projectNameToLocationMap.entrySet().stream()
+                .map(it -> new Project(it.getKey(), readAllFiles(it.getValue())))
                 .toList();
-
+        return concat(stdProject, restDefaultProjects);
     }
 
     public List<File> readAllFiles(String projectPath) {
@@ -54,5 +62,20 @@ public class ProjectService {
                 .map(it ->
                         unchecked(() -> new File(it.getFilename(), new String(it.getInputStream().readAllBytes()))))
                 .toList();
+    }
+
+    public ExecutionResult execute(String sessionId, Project project) {
+
+        var ok = ExpressionAnalyzer.execute(project.content().stream()
+                .map(it -> new SourceFile(it.fileName(), it.content()))
+                .toList());
+
+
+        return new ExecutionResult(ok.stdout, ok.stderr);
+    }
+
+    public ExecutionResult save(String sessionId, Project project) {
+        storageService.put(sessionId, project);
+        return null;
     }
 }
